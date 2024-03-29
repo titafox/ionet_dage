@@ -1,5 +1,5 @@
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Request, Query,Header
+from fastapi import FastAPI, Request, Query, Header
 from fastapi.templating import Jinja2Templates
 from sqlmodel import SQLModel, Field, create_engine, Session
 from typing import List
@@ -11,7 +11,8 @@ app = FastAPI()
 # 添加 CORS 中间件，只允许特定的来源
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://cloud.io.net"],  # 只允许来自 cloud.io.net 的请求，你还得加个你自己的域名
+    allow_origins=["*"],  # 允许所有来源
+    # allow_origins=["https://cloud.io.net"],  # 只允许来自 cloud.io.net 的请求，你还得加个你自己的域名
     allow_credentials=True,
     allow_methods=["*"],  # 允许所有 HTTP 方法
     allow_headers=["*"],  # 允许所有头部
@@ -35,6 +36,22 @@ SQLModel.metadata.create_all(engine)
 templates = Jinja2Templates(directory="templates")
 
 
+def format_timestamp(value):
+    timestamp = int(value) / 1000  # 将毫秒转换为秒
+    return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
+
+
+templates.env.filters["format_timestamp"] = format_timestamp
+
+
+def parse_device_data(value):
+    print(value)
+    return value
+
+
+templates.env.filters["parse_device_data"] = parse_device_data
+
+
 @app.post("/ionet")
 async def post_data(request: Request, user_id: str = Header(None), timestamp: str = Header(None)):
     data = await request.json()
@@ -50,22 +67,6 @@ async def post_data(request: Request, user_id: str = Header(None), timestamp: st
         else:
             # 如果已存在，不进行插入操作
             return {"message": "Data with the same User-ID and Timestamp already exists", "data": data}
-
-
-def format_timestamp(value):
-    timestamp = int(value) / 1000  # 将毫秒转换为秒
-    return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
-
-
-templates.env.filters["format_timestamp"] = format_timestamp
-
-
-def parse_device_data(value):
-    print(value)
-    return value
-
-
-templates.env.filters["parse_device_data"] = parse_device_data
 
 
 # 在后端路由中解析 device_data
