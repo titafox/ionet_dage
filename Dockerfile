@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 暴露应用程序运行的端口
-EXPOSE 8700
+EXPOSE 8000
 
 # 定义容器启动时运行应用程序的命令
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

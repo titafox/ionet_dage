@@ -11,7 +11,7 @@ app = FastAPI()
 # 添加 CORS 中间件，只允许特定的来源
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://cloud.io.net"],  # 只允许来自 cloud.io.net 的请求
+    allow_origins=["https://cloud.io.net"],  # 只允许来自 cloud.io.net 的请求，你还得加个你自己的域名
     allow_credentials=True,
     allow_methods=["*"],  # 允许所有 HTTP 方法
     allow_headers=["*"],  # 允许所有头部
