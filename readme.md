@@ -17,6 +17,8 @@ fetch('https://www.你的域名.com/ionet')
 
 ![dage.png](dage.png)
 
+### 前端安装方法
+下载src 文件夹中的文件，打开chrome浏览器，输入 chrome://extensions/，打开开发者模式，点击加载已解压的扩展程序，选择src文件夹即可。
 
 
 ## 后端docker 构建与部署
