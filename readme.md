@@ -7,7 +7,7 @@
 
 ## 前端
 前端是一个 chrome 的插件，把所有机器状态都抛到后端，方便批量运维。
-插件会检测你是否停留在https://cloud.io.net/worker/devices这个页面，如果是，那么每 30 分钟刷新一次页面。
+插件会检测你是否停留在 https://cloud.io.net/worker/devices 这个页面，如果是，那么每 30 分钟刷新一次页面。
 如果出现 error，直接刷新，越是 error 越往死里刷新直到刷成功为止。
 代码放在了src文件夹，修改：content.js中 68 行，为你自己的域名。    
 ```javascript
