@@ -1,10 +1,11 @@
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, Query, Header
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from sqlmodel import SQLModel, Field, create_engine, Session
+from datetime import datetime
+from datetime import timedelta
 from typing import List
 import json
-from datetime import datetime
 
 app = FastAPI()
 
@@ -38,8 +39,9 @@ templates = Jinja2Templates(directory="templates")
 
 def format_timestamp(value):
     timestamp = int(value) / 1000  # 将毫秒转换为秒
-    return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
-
+    # 加上 8 小时的时区偏移量
+    adjusted_time = datetime.fromtimestamp(timestamp) + timedelta(hours=8)
+    return adjusted_time.strftime("%Y-%m-%d %H:%M:%S")
 
 templates.env.filters["format_timestamp"] = format_timestamp
 
@@ -63,13 +65,11 @@ async def post_data(request: Request, user_id: str = Header(None), timestamp: st
             db_data = Data(user_id=user_id, timestamp=timestamp, device_data=json.dumps(data))
             session.add(db_data)
             session.commit()
-            return {"message": "Data received and stored", "data": data}
+            return {"message": "数据已接收并存储", "data": data}
         else:
             # 如果已存在，不进行插入操作
-            return {"message": "Data with the same User-ID and Timestamp already exists", "data": data}
+            return {"message": "有相同用户ID和时间戳的数据已存在", "data": data}
 
-
-# 在后端路由中解析 device_data
 @app.get("/", response_model=List[Data])
 async def root(request: Request, user_id: str = Query(None)):
     with Session(engine) as session:
