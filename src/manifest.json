@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "大哥IO监控",
+  "description": "为大哥们监控io.net上服务器是否挂了，小弟们为大哥们自动重启服务。",
+  "version": "1.0",
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["https://cloud.io.net/worker/devices*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon.png",
+      "48": "images/icon.png",
+      "128": "images/icon.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon.png",
+    "48": "images/icon.png",
+    "128": "images/icon.png"
+  }
+}

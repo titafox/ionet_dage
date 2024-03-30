@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全心全意为大哥服务</title>
+    <style>
+        .card {
+            max-width: 400px;
+            margin: 0 auto;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body style="width:357px; height:200px;">
+<div class="container py-3">
+    <div class="card">
+        <h3>io.net 大哥服务窗口</h3>
+        <div class="card-body">
+            <p class="card-text">请大哥把页面切换到<a href="https://cloud.io.net/worker/devices" target="_blank">这里</a>。</p>
+            <p class="card-text">别怕页面错误，当页面出现 ERROR 的时候，会自动刷新，直到页面正常显示。</p>
+
+            <p>大哥号用于自动向服务发送红色状态的服务器定位</p>
+            <!-- 表单用于输入 User ID -->
+            <form id="userid-form">
+                <input type="text" id="userid" placeholder="输入您的 大哥号 ">
+                <button type="submit">提交</button>
+            </form>
+            <!-- 用于显示已保存的 User ID -->
+            <div id="saved-userid"></div>
+        </div>
+    </div>
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
