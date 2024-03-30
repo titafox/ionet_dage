@@ -26,7 +26,7 @@ docker run -d --name dageio -p 8000:8000 dageio
 ## nginx 配置
 
 ```nginx
-location /ionet {
+location / {
     proxy_pass http://127.0.0.1:8000;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;

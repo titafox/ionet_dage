@@ -16,36 +16,41 @@
 </form>
 
 {% for item in data %}
-<div class="mb-3">
-    <strong>大哥号:</strong> {{ item.user_id }} <br>
-    <strong>时间戳:</strong> {{ item.timestamp | format_timestamp }}
-</div>
-<table class="table">
-    <thead>
-    <tr>
-        <th>设备名称</th>
-        <th>状态</th>
-        <th>硬件</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% if item.device_data %}
-    {% for device_data in item.device_data %}
-    <tr>
-        <td>{{ device_data.deviceName }}</td>
-        <td>{{ device_data.status }}</td>
-        <td>{{ device_data.hardware }}</td>
-    </tr>
-    {% endfor %}
-    {% else %}
-    <tr>
-        <td colspan="3">无设备数据</td>
-    </tr>
-    {% endif %}
-    </tbody>
-</table>
-{% endfor %}
 
+<div class="p-2">
+<h5 class="card-title">时间: {{ item.timestamp | format_timestamp }}</h5>
+<h6 class="card-subtitle mb-2 text-muted">大哥号: {{ item.user_id }}</h6>
+</div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% if item.device_data %}
+        {% for device_data in item.device_data %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ device_data.deviceName }}</h5>
+                    <p class="card-text">
+                        <strong>状态:</strong>
+                        <span class="badge {{ 'bg-success' if device_data.status == 'Up For' else 'bg-danger' if device_data.status == 'Down For' else 'bg-secondary' }}">
+                            {{ '运行中' if device_data.status == 'Up For' else '停机' if device_data.status == 'Down For' else device_data.status }}
+                        </span>
+                    </p>
+                    <p class="card-text"><strong>硬件:</strong> {{ device_data.hardware }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">无设备数据</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div></div>
+{% endfor %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
