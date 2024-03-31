@@ -74,9 +74,11 @@ async def post_data(request: Request, user_id: str = Header(None), timestamp: st
 async def root(request: Request, user_id: str = Query(None)):
     with Session(engine) as session:
         if user_id:
-            data = session.query(Data).filter(Data.user_id == user_id).all()
+            data = session.query(Data).filter(Data.user_id == user_id).first()
         else:
-            data = []
-    for item in data:
-        item.device_data = json.loads(item.device_data)  # 解析 device_data 字符串为 Python 列表
-    return templates.TemplateResponse("index.html", {"request": request, "data": data, "user_id": user_id})
+            data = None
+
+    if data:
+        data.device_data = json.loads(data.device_data)  # 解析 device_data 字符串为 Python 列表
+
+    return templates.TemplateResponse("index.html", {"request": request, "data": [data] if data else [], "user_id": user_id})
